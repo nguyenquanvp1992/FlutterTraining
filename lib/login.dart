@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app1/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -72,21 +73,24 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(color: Colors.white, fontSize: 19.0),
             ),
           ),
-          Container(
-              height: 44.0,
-              width: 320.0,
-              margin: EdgeInsets.only(top: 5.0),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff1E562A)),
-                  borderRadius: BorderRadius.circular(20.0)),
-              child: Text(
-                "Google",
-                style: TextStyle(
-                    color: Color(0xff1E562A),
-                    fontSize: 19.0,
-                    backgroundColor: Colors.white),
-              )),
+          GestureDetector(
+            onTap: () => runApp(HomePage()),
+            child: Container(
+                height: 44.0,
+                width: 320.0,
+                margin: EdgeInsets.only(top: 5.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Color(0xff1E562A)),
+                    borderRadius: BorderRadius.circular(20.0)),
+                child: Text(
+                  "Google",
+                  style: TextStyle(
+                      color: Color(0xff1E562A),
+                      fontSize: 19.0,
+                      backgroundColor: Colors.white),
+                )),
+          ),
           Expanded(
             child: SizedBox(),
           ),
