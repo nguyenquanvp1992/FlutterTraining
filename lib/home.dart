@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_app1/Detail.dart';
+
 void main() {
   runApp(HomePage());
 }
@@ -13,6 +15,9 @@ class HomePage extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomePageStatefull(),
+      routes: <String, WidgetBuilder> {
+        Detail.route : (BuildContext context) => Detail()
+      },
     );
   }
 }
@@ -24,61 +29,50 @@ class HomePageStatefull extends StatefulWidget {
   }
 }
 
+final List<Person> datas = List<Person>.generate(
+    10, (index) => Person(id: index, name: "Item ${index + 1}"));
+
 class HomePageState extends State<HomePageStatefull> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              title: const Text('Floating Nested SliverAppBar'),
-              floating: false,
-              expandedHeight: 200.0,
-              forceElevated: innerBoxIsScrolled,
-            ),
-          ];
-        },
+        backgroundColor: Colors.white,
         body: ListView.builder(
-          padding: const EdgeInsets.all(10.0),
-          itemCount: 20,
+          itemCount: datas.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-                height: 80.0,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 30.0,
-                      child: Text(
-                          index <= 8 ? "0${index + 1} " : "${index + 1}",
-                          style: TextStyle(
-                              color: index <= 2
-                                  ? Color(0xffBF8877)
-                                  : Color(0xffB5BEB7),
-                              decoration: TextDecoration.underline)),
-                    ),
-                    Image.asset("images/ic_avatar.png", fit: BoxFit.fill,),
-                    SizedBox(width: 8.0,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Thánh Gióng - Truyện cổ tích...", style: TextStyle(fontSize: 14.0)),
-                            if (index == 0) Image.asset("images/ic_vip.png")
-                          ],
-                        ),
-                        Container(margin: EdgeInsets.only(top: 4), child: Text("Thể loại : Truyện cổ tích", style: TextStyle(fontSize: 10.0)),),
-                        Container(margin: EdgeInsets.only(top: 4), child: Text("Lượt nghe : 1511", style: TextStyle(fontSize: 10.0),),)
-                      ],
-                    ),
-                  ],
-                ));
+              margin: EdgeInsets.all(10.0),
+              child: RaisedButton(
+                onPressed: () => {
+                  if ( index % 2 == 0) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Detail()))
+                  } else {
+                    navigatorDisplayDetail(index)
+                  }
+                },
+                child: Text(datas[index].name),
+              ),
+            );
           },
-        ),
-      ),
-    );
+        ));
   }
+
+  navigatorDisplayDetail(int index) async {
+    final delete = await Navigator.pushNamed(context, Detail.route);
+
+    if (delete) {
+      datas.removeAt(index);
+      setState(() {
+
+      });
+    }
+  }
+}
+
+class Person {
+  String name = "";
+  int id = 0;
+
+  Person({this.id, this.name});
 }
